@@ -18,6 +18,10 @@ app.get('/', function(req, res) {
   res.send("Hi I am a chatbot")
 })
 
+app.get('/test', function(req, res) {
+  res.send("This is a test")
+})
+
 let token = "EAAB6BV0Flp8BAAWZAMdvVCn4zJmuc5yVtBYGVZCz41yQphgdeB2SpwuGzJeJCf0WSr8Bs4TNIAFpQBbhCTXnQMrRNr8KTZB4ioQkbAfRabTXwOZAoC5GfZC5nV1Q5ZBRrypHcrKmwhRgyfa04XXkK6dBFqKZCaZC4HfrxZCwncVhohwZDZD"
 
 // Facebook
