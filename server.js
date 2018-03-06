@@ -40,7 +40,23 @@ app.post('/webhook/', function(req, res) {
     let sender = event.sender.id
     if (event.message && event.message.text) {
       let text = event.message.text
-      sendText(sender, "Text echo: " + text.substring(0, 100))
+
+      var intent = '';
+      //send message to wit.ai
+      request.post({  url: 'https://api.wit.ai/message',
+                      auth: {bearer: '24OSWHTMR4AMQ4ULIGAYSIGKCQBEK2XU'},
+                      qs: { v: '20180228',
+                            q: text }
+                }, function (err, httpResponse, body) {
+                if (httpResponse && (httpResponse.statusCode === 401 || httpResponse.statusCode === 403)) { 
+                  logger('The authentification token to post to wit.ai is invalid or expired.');
+                }
+                console.log('Server:', body);
+                intent = body;
+                }
+            );
+
+      sendText(sender, "Text echo: " + text.substring(0, 100) + "   intent: " + intent)
     }
   }
   res.sendStatus(200)
