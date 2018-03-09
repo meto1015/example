@@ -58,8 +58,6 @@ app.post('/webhook/', function(req, res) {
                 console.log('Here is the intent: ' + intent);
                 }
             );
-      intent = 'Here I need to assign the intent';
-      response.send('intent has been detected: ' + intent);
 
       sendText(sender, "Text echo: " + text.substring(0, 100) + "   intent: " + intent)
     }
