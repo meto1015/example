@@ -53,6 +53,7 @@ app.post('/webhook/', function(req, res) {
                   logger('The authentification token to post to wit.ai is invalid or expired.');
                 }
                 console.log('Server:', body);
+                var jsonBody = JSON.parse(body);
                 intent = jsonBody.entities.intent[0].value;
                 console.log('Here is the intent: ' + intent);
                 }
