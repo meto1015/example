@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const request = require('request')
 
 const app = express()
+//initialize intent variable
+var intent = ''
 
 app.set('port', (process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080))
 
@@ -41,7 +43,6 @@ app.post('/webhook/', function(req, res) {
     if (event.message && event.message.text) {
       let text = event.message.text
 
-      var intent = '';
       //send message to wit.ai
       request.post({  url: 'https://api.wit.ai/message',
                       auth: {bearer: '24OSWHTMR4AMQ4ULIGAYSIGKCQBEK2XU'},
@@ -52,9 +53,12 @@ app.post('/webhook/', function(req, res) {
                   logger('The authentification token to post to wit.ai is invalid or expired.');
                 }
                 console.log('Server:', body);
-                intent = 'here i have to parse the responseBody for the intent';
+                intent = jsonBody.entities.intent[0].value;
+                console.log('Here is the intent: ' + intent);
                 }
             );
+      intent = 'Here I need to assign the intent';
+      response.send('intent has been detected: ' + intent);
 
       sendText(sender, "Text echo: " + text.substring(0, 100) + "   intent: " + intent)
     }
