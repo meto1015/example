@@ -54,7 +54,7 @@ app.post('/webhook/', function(req, res) {
                 }
                 console.log('Server:', body);
                 var jsonBody = JSON.parse(body);
-                intent = jsonBody.entities.intent[0].value;
+                //intent = jsonBody.entities.intent[0].value;
                 console.log('Here is the intent: ' + intent);
                 }
             );
