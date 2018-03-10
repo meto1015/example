@@ -6,7 +6,7 @@ const request = require('request')
 
 const app = express()
 //initialize intent variable
-var intent = ''
+var intent = '...'
 
 app.set('port', (process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080))
 
@@ -54,19 +54,19 @@ app.post('/webhook/', function(req, res) {
                 }
                 console.log('Server:', body);
                 var jsonBody = JSON.parse(body);
-                //intent = jsonBody.entities.intent[0].value;
-                //console.log('Here is the intent: ' + intent);
+                intent = jsonBody.entities.intent[0].value;
+                dispatchIntent(intent);
                 }
             );
 
-      sendText(sender, "Text echo: " + text.substring(0, 100) + "   intent: " , intent);
+      sendText(sender, "Text echo: " + text.substring(0, 100) + "   intent: " + intent);
     }
   }
   res.sendStatus(200)
 })
 
-function sendText(sender, text, intent) {
-  let messageData = {text: text + intent}
+function sendText(sender, text) {
+  let messageData = {text: text}
   request({
     url: "https://graph.facebook.com/v2.6/me/messages",
     qs: {access_token: token},
@@ -84,8 +84,8 @@ function sendText(sender, text, intent) {
   })
 }
 
-function dispatchIntent (json){
-
+function dispatchIntent (intention){
+  intent = intention;
 }
 
 app.listen(app.get('port'), function() {
