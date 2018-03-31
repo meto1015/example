@@ -55,11 +55,11 @@ app.post('/webhook/', function(req, res) {
                 console.log('Server:', body);
                 var jsonBody = JSON.parse(body);
                 intent = jsonBody.entities.intent[0].value;
-                dispatchIntent(intent);
+                dispatchIntent(intent, sendText(sender, "Text echo: " + text.substring(0, 100) + "   intent: " + intent));
                 }
             );
 
-      sendText(sender, "Text echo: " + text.substring(0, 100) + "   intent: " + intent);
+      //sendText(sender, "Text echo: " + text.substring(0, 100) + "   intent: " + intent);
     }
   }
   res.sendStatus(200)
@@ -84,8 +84,9 @@ function sendText(sender, text) {
   })
 }
 
-function dispatchIntent (intention){
+function dispatchIntent (intention, sendTextCallback){
   intent = intention;
+  sendTextCallback();
 }
 
 app.listen(app.get('port'), function() {

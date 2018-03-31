@@ -1,0 +1,19 @@
+TO DOs
+
+wit.ai
+Concept for chatbot:
+	What intents?
+	How many intents?
+	Expressions
+	Entities
+
+
+nodeJs server
+	prettify (clean up the fucking mess of code!!)
+	error handling - what if there is no intent detected? --> server will crash so far
+
+	next step: don't just return the intent.. make a concept of handeling the different intents detected
+		e.g.	intent = get_teperature
+				--> action = return temperature in engelberg
+
+	sendText function has to wait for dispatch intent function! Right now it only works fo the second and ongoing messages and will return the intent of the previous one.
