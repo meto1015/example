@@ -6,7 +6,8 @@ const request = require('request')
 
 const app = express()
 //initialize intent variable
-var intent = '...'
+var intent = 'initial intent',
+    sender = 'initial sender'
 
 app.set('port', (process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080))
 
@@ -39,7 +40,7 @@ app.post('/webhook/', function(req, res) {
   let messaging_events = req.body.entry[0].messaging
   for (let i = 0; i < messaging_events.length; i++) {
     let event = messaging_events[i]
-    let sender = event.sender.id
+    sender = event.sender.id
     if (event.message && event.message.text) {
       let text = event.message.text
 
@@ -49,13 +50,16 @@ app.post('/webhook/', function(req, res) {
                       qs: { v: '20180228',
                             q: text }
                 }, function (err, httpResponse, body) {
-                if (httpResponse && (httpResponse.statusCode === 401 || httpResponse.statusCode === 403)) { 
-                  logger('The authentification token to post to wit.ai is invalid or expired.');
-                }
-                console.log('Server:', body);
-                var jsonBody = JSON.parse(body);
-                intent = jsonBody.entities.intent[0].value;
-                dispatchIntent(intent, sendText)
+                  if (err) {
+                    console.log(err);
+                  }
+                  if (httpResponse && (httpResponse.statusCode === 401 || httpResponse.statusCode === 403)) { 
+                    console.log('The authentification token to post to wit.ai is invalid or expired.');
+                  }
+                  console.log('Server:', body);
+                  var jsonBody = JSON.parse(body);
+                  intent = jsonBody.entities.intent[0].value;
+                  dispatchIntent(intent, sendText)
                 }
             );
 
