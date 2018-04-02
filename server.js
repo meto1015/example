@@ -55,7 +55,7 @@ app.post('/webhook/', function(req, res) {
                 console.log('Server:', body);
                 var jsonBody = JSON.parse(body);
                 intent = jsonBody.entities.intent[0].value;
-                dispatchIntent(intent, sendText(sender, "Text echo: " + text.substring(0, 100) + "   intent: " + intent));
+                dispatchIntent(intent, sendText)
                 }
             );
 
@@ -65,6 +65,34 @@ app.post('/webhook/', function(req, res) {
   res.sendStatus(200)
 })
 
+
+
+var sendText = function(sender, text) {
+  let messageData = {text: text}
+  request({
+    url: "https://graph.facebook.com/v2.6/me/messages",
+    qs: {access_token: token},
+    method: "POST",
+    json: {
+      recipient: {id: sender},
+      message: messageData
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log("sending error")
+    } else if (response.body.error) {
+      console.log("response body error")
+    }
+  })
+}
+
+var dispatchIntent = function(intention, sendTextCallback){
+  intent = intention;
+  sendTextCallback(sender, "Text echo: " + text.substring(0, 100) + "   intent: " + intent);
+}
+
+
+/*
 function sendText(sender, text) {
   let messageData = {text: text}
   request({
@@ -88,6 +116,7 @@ function dispatchIntent (intention, sendTextCallback){
   intent = intention;
   sendTextCallback();
 }
+*/
 
 app.listen(app.get('port'), function() {
   console.log("running: port")
