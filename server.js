@@ -7,7 +7,8 @@ const request = require('request')
 const app = express()
 //initialize intent variable
 var intent = 'initial intent',
-    sender = 'initial sender'
+    sender = 'initial sender',
+    text = 'initial text'
 
 app.set('port', (process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080))
 
@@ -42,7 +43,7 @@ app.post('/webhook/', function(req, res) {
     let event = messaging_events[i]
     sender = event.sender.id
     if (event.message && event.message.text) {
-      let text = event.message.text
+    text = event.message.text
 
       //send message to wit.ai
       request.post({  url: 'https://api.wit.ai/message',
